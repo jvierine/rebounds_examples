@@ -17,28 +17,22 @@ from pykep.orbit_plots import plot_planet, plot_lambert
 # Start epoch (MJD2000). You can set this to "now" if desired.
 # For a simple run, set t0 = 0 (J2000). We'll define the impact at +365 d.
 t0 = 0.0  # MJD2000
-
-
 earth=pk.planet.jpl_lp("earth")
-print(earth)
 
+# this many days after epoch, there will be an impact
 t_impact=2200
 t = pk.epoch(t_impact, 'mjd2000')
 
 # Get position and velocity
 r, v = earth.eph(t)
 
-# velocity that comet hits earth
-v_comet = np.array([0,-30e3,30e3])
-#v_comet = np.array([0,-20e3,20e3])
-
-print(v)
-#print(v_rel)
-
+# This is the velocity that the comet impacts the Earth
+comet = np.array([0,-30e3,30e3])
+# create a keplerian element for the comet
+# position at earth and velocity the specified velocity
 comet = pk.planet.keplerian(t,r, v_comet, pk.MU_SUN, 10, 10, 10,  'Comet')
-print(comet)
 
-
+# search for optimal launch with minimum delta v requirement
 n_tof=500
 departure_time = np.linspace(0,t_impact,num=n_tof)
 arrival_time = np.linspace(0,t_impact,num=n_tof)
