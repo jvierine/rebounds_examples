@@ -1,6 +1,11 @@
 #!/usr/bin/env python3
 """
-Pork-chop diagram: Earth departure -> newly discovered comet (pre-impact)
+Demonstration of how solving the Lambert problem can be used to find a minimum delta v launch 
+so that a rocket laden with fusion bombs can be sent to hit a newly discovered comet that would collide with Earth.
+
+Uses ESAs awesome pykep library. 
+
+Juha Vierinen
 """
 import numpy as np
 import matplotlib.pyplot as plt
