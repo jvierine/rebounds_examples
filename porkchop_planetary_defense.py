@@ -52,7 +52,7 @@ for i in range(n_tof):
             rc,vc=comet.eph(pk.epoch(arrival_time[j], 'mjd2000'))
             tof=arrival_time[j]-departure_time[i]
             dt=tof*pk.DAY2SEC
-            l = pk.lambert_problem(r1 = re, r2 = rc, tof = dt, mu = pk.MU_SUN, max_revs=5,cw=False)
+            l = pk.lambert_problem(r1 = re, r2 = rc, tof = dt, mu = pk.MU_SUN, max_revs=10,cw=False)
             v1=l.get_v1()
             n_sol=len(v1)
             best_dv_this=1e99
@@ -84,7 +84,7 @@ re,ve=earth.eph(pk.epoch(t_exit, 'mjd2000'))
 rc,vc=comet.eph(pk.epoch(t_arrival, 'mjd2000'))
 
 # solve the Lambert problem for the best solution
-l = pk.lambert_problem(r1 = re, r2 = rc, tof = best_res["tof"], mu = pk.MU_SUN, max_revs=5,cw=False)
+l = pk.lambert_problem(r1 = re, r2 = rc, tof = best_res["tof"], mu = pk.MU_SUN, max_revs=10,cw=False)
 rocket_v=l.get_v1()[best_res["sol"]]
 rocket_r=l.get_x()[best_res["sol"]]
 rocket = pk.planet.keplerian(pk.epoch(t_exit, 'mjd2000'),re, rocket_v, pk.MU_SUN, 10, 10, 10,  'Rocket')
