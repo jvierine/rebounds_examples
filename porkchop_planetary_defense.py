@@ -33,7 +33,7 @@ v_comet = np.array([0,-30e3,30e3])
 comet = pk.planet.keplerian(t,r, v_comet, pk.MU_SUN, 10, 10, 10,  'Comet')
 
 # search for optimal launch with minimum delta v requirement
-n_tof=500
+n_tof=1000
 departure_time = np.linspace(0,t_impact,num=n_tof)
 arrival_time = np.linspace(0,t_impact,num=n_tof)
 delta_v = np.zeros([2,n_tof,n_tof])
