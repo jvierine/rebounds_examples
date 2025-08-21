@@ -1,5 +1,7 @@
 # Rebound and pykep examples
 
+The rebound numerical propagator and the pykep library are useful tools for celestial mechanics and orbit transfers. Here are some simple demonstrations. See the software for more sophisticated examples.
+
 ## Smashing into a comet before it is too late
 
 Here is an example of using the Lambert problem solver in pykep can be used to search for minimum delta v launch windows when in a pinch. Here there is an imminent impact by a comet at epoch 2200 days. We need to find a way to hit it with a rocket before this.
@@ -25,3 +27,6 @@ Here is a more standard example. Transferring from Earth to Mars.
 <img width="605" height="457" alt="Screenshot 2025-08-21 at 08 05 01" src="https://github.com/user-attachments/assets/32448649-4677-42c8-a3e2-6ad3cb8a6f77" />
 
 <img width="1305" height="391" alt="Screenshot 2025-08-21 at 08 05 22" src="https://github.com/user-attachments/assets/7891c92e-ab63-4a61-8b2a-eb1d3e4fea00" />
+
+
+Dario Izzo. (2019). esa/pykep: Bug fixes and more support on Equinoctial Elements (v2.3). Zenodo. https://doi.org/10.5281/zenodo.2575462
