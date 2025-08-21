@@ -86,7 +86,7 @@ for i in range(n_tof):
 # porkchop plot
 fig,ax=plt.subplots()
 im=ax.pcolormesh(mjd_np,travel_time,delta_v[:,:].T/1e3,cmap="turbo",vmin=0,vmax=50)
-ax.set_title("Prograde orbits")
+ax.set_title("Earth-Mars transfers")
 fig.colorbar(im,ax=ax,label=r"$\Delta v$ (km/s)")
 #cb=plt.colorbar()
 #cb.set_label()
