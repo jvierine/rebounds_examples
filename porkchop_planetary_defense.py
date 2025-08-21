@@ -64,7 +64,7 @@ for i in range(n_tof):
                     best_l=l
                     best_dv=exit_dv_cw
                     best_res={"l":l,"t0":departure_time[i],"t1":arrival_time[j],"tof":dt,"re":re,"sol":si}
-                    print("found better delta v %1.2f (km/s) si=%d"%(best_dv/1e3,si))
+                    print("found better delta v %1.2f (km/s) si=%d tof=%1.2f years"%(best_dv/1e3,si,dt/24/3600/365))
             delta_v[0,i,j]=best_dv_this
 
 # porkchop plot
@@ -113,10 +113,10 @@ rrocket = np.array(rrocket)
 plt.figure(figsize=(6,6))
 plt.plot(rs[:,0]/pk.AU, rs[:,1]/pk.AU, label="Earth orbit")
 plt.plot(crs[:,0]/pk.AU, crs[:,1]/pk.AU, label="Comet")
-plt.plot(rrocket[0,0]/pk.AU, rrocket[0,1]/pk.AU, "*", label="Rocket is lauched")
+plt.plot(rrocket[0,0]/pk.AU, rrocket[0,1]/pk.AU, "*", label="Rocket is lauched",zorder=5)
 plt.plot(rrocket[:,0]/pk.AU, rrocket[:,1]/pk.AU, label="Rocket")
-plt.plot(crs[-1,0]/pk.AU, crs[-1,1]/pk.AU, "*", label="Comet impacts Earth")
-plt.plot(rrocket[-1,0]/pk.AU, rrocket[-1,1]/pk.AU, "*", label="Rocket impacts comet (tof=%d days)"%(best_res["tof"]/24/3600))
+plt.plot(crs[-1,0]/pk.AU, crs[-1,1]/pk.AU, "*", label="Comet impacts Earth",zorder=5)
+plt.plot(rrocket[-1,0]/pk.AU, rrocket[-1,1]/pk.AU, "*", label="Rocket impacts comet",zorder=5)
 plt.scatter([0],[0],c='orange',marker='*',s=200,label="Sun")
 plt.axis('equal')
 plt.xlabel("x [AU]")
