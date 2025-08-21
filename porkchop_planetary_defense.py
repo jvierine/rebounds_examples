@@ -27,7 +27,7 @@ t = pk.epoch(t_impact, 'mjd2000')
 r, v = earth.eph(t)
 
 # This is the velocity that the comet impacts the Earth
-comet = np.array([0,-30e3,30e3])
+v_comet = np.array([0,-30e3,30e3])
 # create a keplerian element for the comet
 # position at earth and velocity the specified velocity
 comet = pk.planet.keplerian(t,r, v_comet, pk.MU_SUN, 10, 10, 10,  'Comet')
@@ -52,14 +52,20 @@ for i in range(n_tof):
             rc,vc=comet.eph(pk.epoch(arrival_time[j], 'mjd2000'))
             tof=arrival_time[j]-departure_time[i]
             dt=tof*pk.DAY2SEC
-            l = pk.lambert_problem(r1 = re, r2 = rc, tof = dt, mu = pk.MU_SUN, max_revs=2,cw=False)
-            exit_dv_cw=np.linalg.norm(np.array(ve)-np.array(l.get_v1()[0]))
-            if exit_dv_cw < best_dv:
-                best_l=l
-                best_dv=exit_dv_cw
-                best_res={"l":l,"t0":departure_time[i],"t1":arrival_time[j],"tof":dt,"re":re}
-                print("found better delta v %1.2f (km/s)"%(best_dv/1e3))
-            delta_v[0,i,j]=exit_dv_cw
+            l = pk.lambert_problem(r1 = re, r2 = rc, tof = dt, mu = pk.MU_SUN, max_revs=5,cw=False)
+            v1=l.get_v1()
+            n_sol=len(v1)
+            best_dv_this=1e99
+            for si in range(n_sol):
+                exit_dv_cw=np.linalg.norm(np.array(ve)-np.array(v1[si]))
+                if exit_dv_cw < best_dv_this:
+                    best_dv_this=exit_dv_cw
+                if exit_dv_cw < best_dv:
+                    best_l=l
+                    best_dv=exit_dv_cw
+                    best_res={"l":l,"t0":departure_time[i],"t1":arrival_time[j],"tof":dt,"re":re,"sol":si}
+                    print("found better delta v %1.2f (km/s) si=%d"%(best_dv/1e3,si))
+            delta_v[0,i,j]=best_dv_this
 
 # porkchop plot
 plt.pcolormesh(departure_time,arrival_time,delta_v[0,:,:].T/1e3,cmap="turbo",vmin=0,vmax=50)
@@ -78,9 +84,9 @@ re,ve=earth.eph(pk.epoch(t_exit, 'mjd2000'))
 rc,vc=comet.eph(pk.epoch(t_arrival, 'mjd2000'))
 
 # solve the Lambert problem for the best solution
-l = pk.lambert_problem(r1 = re, r2 = rc, tof = best_res["tof"], mu = pk.MU_SUN, max_revs=2,cw=False)
-rocket_v=l.get_v1()[0]
-rocket_r=l.get_x()[0]
+l = pk.lambert_problem(r1 = re, r2 = rc, tof = best_res["tof"], mu = pk.MU_SUN, max_revs=5,cw=False)
+rocket_v=l.get_v1()[best_res["sol"]]
+rocket_r=l.get_x()[best_res["sol"]]
 rocket = pk.planet.keplerian(pk.epoch(t_exit, 'mjd2000'),re, rocket_v, pk.MU_SUN, 10, 10, 10,  'Rocket')
 
 # plot orbits of Earth and the impacting comet until impact time
@@ -107,9 +113,10 @@ rrocket = np.array(rrocket)
 plt.figure(figsize=(6,6))
 plt.plot(rs[:,0]/pk.AU, rs[:,1]/pk.AU, label="Earth orbit")
 plt.plot(crs[:,0]/pk.AU, crs[:,1]/pk.AU, label="Comet")
+plt.plot(rrocket[0,0]/pk.AU, rrocket[0,1]/pk.AU, "*", label="Rocket is lauched")
 plt.plot(rrocket[:,0]/pk.AU, rrocket[:,1]/pk.AU, label="Rocket")
 plt.plot(crs[-1,0]/pk.AU, crs[-1,1]/pk.AU, "*", label="Comet impacts Earth")
-plt.plot(rrocket[-1,0]/pk.AU, rrocket[-1,1]/pk.AU, "*", label="Rocket impacts comet")
+plt.plot(rrocket[-1,0]/pk.AU, rrocket[-1,1]/pk.AU, "*", label="Rocket impacts comet (tof=%d days)"%(best_res["tof"]/24/3600))
 plt.scatter([0],[0],c='orange',marker='*',s=200,label="Sun")
 plt.axis('equal')
 plt.xlabel("x [AU]")
