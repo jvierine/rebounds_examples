@@ -10,7 +10,7 @@ Here is an example of using the Lambert problem solver in pykep can be used to s
 
 <img width="577" height="449" alt="Screenshot 2025-08-20 at 21 17 13" src="https://github.com/user-attachments/assets/9f54b41d-32c6-452c-b34f-d4eafca95dfc" />
 
-Here is the lowest $\Delta v$ launch (there are quite many different options with similar requirement):
+Here is the lowest $\Delta v$ launch (there are quite many different options with similar requirement). In this case, the rocket makes a few orbits before impact, taking about 5 years from launch to impact at comet:
 
 <img width="534" height="537" alt="Screenshot 2025-08-21 at 08 31 33" src="https://github.com/user-attachments/assets/36c390d3-0e43-4238-8cb3-56c9bc4391b9" />
 
