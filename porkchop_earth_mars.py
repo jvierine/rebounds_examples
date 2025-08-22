@@ -28,11 +28,11 @@ t_start=pk.epoch_from_string("2024-09-01 00:00:00").mjd
 
 # 10 years into the future (days)
 max_delay=6*365
-max_dur=2*364
+max_dur=500
 
 # search for optimal launch with minimum delta v requirement
 # how many 
-n_tof=500
+n_tof=1000
 departure_time = np.linspace(0,max_delay,num=n_tof)
 travel_time = np.linspace(30,max_dur,num=n_tof)
 
@@ -99,6 +99,10 @@ for i in range(n_tof):
 # porkchop plot
 fig,ax=plt.subplots()
 im=ax.pcolormesh(mjd_np,travel_time,delta_v[:,:].T/1e3,cmap="turbo",vmin=0,vmax=50)
+# starship fueled in leo has dv of 6.5 km/s 
+cont = ax.contour(mjd_np, travel_time, delta_v[:,:].T/1e3, levels=[6.5], colors='k', linestyles='dashed')
+ax.clabel(cont, inline=True, fontsize=8, fmt='%1.1f km/s') # Add labels to contours
+
 ax.set_title("Earth-Mars transfers")
 fig.colorbar(im,ax=ax,label=r"$\Delta v$ (km/s)")
 #cb=plt.colorbar()
