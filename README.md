@@ -24,7 +24,8 @@ Here is a more standard example. Transferring from Earth to Mars.
 > python3 porkchop_earth_mars.py
 </code>
 
-<img width="1399" height="634" alt="Screenshot 2025-08-22 at 09 08 51" src="https://github.com/user-attachments/assets/c7fc9747-0687-4b34-969d-a2abb1cfe58f" />
+<img width="1577" height="553" alt="mars" src="https://github.com/user-attachments/assets/d275c56c-ee10-4c22-9db3-0cb1fd2db050" />
+
 
 
 <img width="1305" height="391" alt="Screenshot 2025-08-21 at 08 05 22" src="https://github.com/user-attachments/assets/7891c92e-ab63-4a61-8b2a-eb1d3e4fea00" />
