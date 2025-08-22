@@ -23,11 +23,20 @@ earth=pk.planet.jpl_lp("earth")
 t_impact=2200
 t = pk.epoch(t_impact, 'mjd2000')
 
+# how many days before potential earth impact does the
+# impactor need to meet the comet
+t_advance = 30
+
 # Get position and velocity
 r, v = earth.eph(t)
 
+# assume that spacecraft leaves LEO
+# at 300 km altitude, with perfect LEO insertion already done
+# let's assume there is a fueled up starship at this orbit ready to go
+v_earth_orbit = 7.726e3
+
 # This is the velocity that the comet impacts the Earth
-v_comet = np.array([0,-30e3,30e3])
+v_comet = np.array([-15e3,-28e3,28e3])
 # create a keplerian element for the comet
 # position at earth and velocity the specified velocity
 comet = pk.planet.keplerian(t,r, v_comet, pk.MU_SUN, 10, 10, 10,  'Comet')
@@ -48,7 +57,7 @@ for i in range(n_tof):
 
     for j in range(n_tof):
         # reach target 30 days before impact
-        if (arrival_time[j]>(departure_time[i]+10)) and arrival_time[j]<(t_impact-30) :
+        if (arrival_time[j]>(departure_time[i]+10)) and arrival_time[j]<(t_impact-t_advance) :
             rc,vc=comet.eph(pk.epoch(arrival_time[j], 'mjd2000'))
             tof=arrival_time[j]-departure_time[i]
             dt=tof*pk.DAY2SEC
@@ -57,7 +66,14 @@ for i in range(n_tof):
             n_sol=len(v1)
             best_dv_this=1e99
             for si in range(n_sol):
-                exit_dv_cw=np.linalg.norm(np.array(ve)-np.array(v1[si]))
+                # this is v_inf (earth-relative speed when exiting earth's sphere of influence)
+                vinf=np.linalg.norm(np.array(ve)-np.array(v1[si]))
+                #
+                # delta v required when exiting LEO with optimally placed spacecraft in LEO
+                exit_dv_cw = np.sqrt(vinf**2 + 2*v_earth_orbit**2) - v_earth_orbit
+                #print(v_earth_orbit-vinf)
+#                exit_dv_cw=vinf
+#                print(exit_dv_cw)
                 if exit_dv_cw < best_dv_this:
                     best_dv_this=exit_dv_cw
                 if exit_dv_cw < best_dv:
@@ -90,7 +106,7 @@ rocket_r=l.get_x()[best_res["sol"]]
 rocket = pk.planet.keplerian(pk.epoch(t_exit, 'mjd2000'),re, rocket_v, pk.MU_SUN, 10, 10, 10,  'Rocket')
 
 # plot orbits of Earth and the impacting comet until impact time
-times = np.linspace(-100, t_impact, 10000)
+times = np.linspace(-6000, t_impact, 10000)
 rs=[]
 crs=[]
 for t in times:

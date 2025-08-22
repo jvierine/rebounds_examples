@@ -14,6 +14,7 @@ import matplotlib.pyplot as plt
 import pykep as pk
 from pykep.orbit_plots import plot_planet, plot_lambert
 import matplotlib.dates as mdates
+import scipy.constants as sc
 date_form = mdates.DateFormatter('%Y-%m-%d')
 
 mjd_epoch = np.datetime64('1858-11-17T00:00:00')
@@ -34,6 +35,15 @@ max_dur=2*364
 n_tof=500
 departure_time = np.linspace(0,max_delay,num=n_tof)
 travel_time = np.linspace(30,max_dur,num=n_tof)
+
+# assume that spacecraft leaves LEO
+# at 300 km altitude, with perfect LEO insertion already done
+# let's assume there is a fueled up starship at this orbit ready to go
+v_earth_orbit = np.sqrt(sc.G*5.972e24/(6357e3+300e3))
+# assume that we enter mars orbit at 300 km altitude
+v_mars_orbit = np.sqrt(sc.G*6.39e23/(3389.5e3+300e3))
+print(v_earth_orbit)
+print(v_mars_orbit)
 
 mjd_np=[]
 for i in range(n_tof):
@@ -70,8 +80,11 @@ for i in range(n_tof):
         n_sol=len(v1)
         best_dv_this=1e99
         for si in range(n_sol):
-            exit_dv=np.linalg.norm(np.array(ve)-np.array(v1[si]))
-            entry_dv=np.linalg.norm(np.array(vc)-np.array(v2[si]))
+            vinf=np.linalg.norm(np.array(ve)-np.array(v1[si]))
+            exit_dv = np.sqrt(vinf**2 + 2*v_earth_orbit**2)-v_earth_orbit
+
+            vinf=np.linalg.norm(np.array(vc)-np.array(v2[si]))
+            entry_dv = np.sqrt(vinf**2 + 2*v_mars_orbit**2)-v_mars_orbit   
             dv_this=exit_dv+entry_dv
             if dv_this < best_dv_this:
                 best_dv_this=dv_this
