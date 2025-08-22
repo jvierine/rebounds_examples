@@ -26,6 +26,14 @@ mars=pk.planet.jpl_lp("mars")
 # start search at this date (Modified Julian Date)
 t_start=pk.epoch_from_string("2024-09-01 00:00:00").mjd
 
+print(pk.epoch_from_string("2024-09-01 00:00:00").jd)
+
+re,ve=earth.eph(pk.epoch(t_start, 'mjd'))
+print(re)
+plt.plot([re[0]],[re[1]],"x")
+plt.plot([0],[0],"x")
+plt.show()
+
 # 10 years into the future (days)
 max_delay=6*365
 max_dur=2*364
