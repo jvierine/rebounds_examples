@@ -18,7 +18,7 @@ Here is the lowest $\Delta v$ launch (there are quite many different options wit
 
 ## Earth-Mars Hohmann transfer
 
-Here is a more standard example. Transferring from Earth to Mars. 
+Here is a more standard example. Transferring from Earth to Mars. Looks like the 2031 transfer window is not nearly as nice as the 2035 one. The 2033 and 2025 windows allow a much shorter flight time.
 
 <code>
 > python3 porkchop_earth_mars.py
@@ -28,7 +28,7 @@ Here is a more standard example. Transferring from Earth to Mars.
 
 
 
-<img width="1305" height="391" alt="Screenshot 2025-08-21 at 08 05 22" src="https://github.com/user-attachments/assets/7891c92e-ab63-4a61-8b2a-eb1d3e4fea00" />
+<!-- <img width="1305" height="391" alt="Screenshot 2025-08-21 at 08 05 22" src="https://github.com/user-attachments/assets/7891c92e-ab63-4a61-8b2a-eb1d3e4fea00" /> --/>
 
 
 Dario Izzo. (2019). esa/pykep: Bug fixes and more support on Equinoctial Elements (v2.3). Zenodo. https://doi.org/10.5281/zenodo.2575462
