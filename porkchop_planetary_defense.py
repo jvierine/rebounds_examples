@@ -36,7 +36,8 @@ r, v = earth.eph(t)
 v_earth_orbit = 7.726e3
 
 # This is the velocity that the comet impacts the Earth
-v_comet = np.array([-15e3,-28e3,28e3])
+#v_comet = np.array([-15e3,-28e3,28e3])
+v_comet = np.array([0,-30e3,30e3])
 # create a keplerian element for the comet
 # position at earth and velocity the specified velocity
 comet = pk.planet.keplerian(t,r, v_comet, pk.MU_SUN, 10, 10, 10,  'Comet')
@@ -45,7 +46,7 @@ comet = pk.planet.keplerian(t,r, v_comet, pk.MU_SUN, 10, 10, 10,  'Comet')
 n_tof=1000
 departure_time = np.linspace(0,t_impact,num=n_tof)
 arrival_time = np.linspace(0,t_impact,num=n_tof)
-delta_v = np.zeros([2,n_tof,n_tof])
+delta_v = np.zeros([n_tof,n_tof])
 delta_v[:,:]=np.nan
 best_l=None
 best_dv=1e99
@@ -81,10 +82,10 @@ for i in range(n_tof):
                     best_dv=exit_dv_cw
                     best_res={"l":l,"t0":departure_time[i],"t1":arrival_time[j],"tof":dt,"re":re,"sol":si}
                     print("found better delta v %1.2f (km/s) si=%d tof=%1.2f years"%(best_dv/1e3,si,dt/24/3600/365))
-            delta_v[0,i,j]=best_dv_this
+            delta_v[i,j]=best_dv_this
 
 # porkchop plot
-plt.pcolormesh(departure_time,arrival_time,delta_v[0,:,:].T/1e3,cmap="turbo",vmin=0,vmax=50)
+plt.pcolormesh(departure_time,arrival_time,delta_v[:,:].T/1e3,cmap="turbo",vmin=0,vmax=50)
 plt.title("Prograde orbits")
 cb=plt.colorbar()
 cb.set_label(r"$\Delta v$ (km/s)")
@@ -106,7 +107,7 @@ rocket_r=l.get_x()[best_res["sol"]]
 rocket = pk.planet.keplerian(pk.epoch(t_exit, 'mjd2000'),re, rocket_v, pk.MU_SUN, 10, 10, 10,  'Rocket')
 
 # plot orbits of Earth and the impacting comet until impact time
-times = np.linspace(-6000, t_impact, 10000)
+times = np.linspace(-100, t_impact, 10000)
 rs=[]
 crs=[]
 for t in times:
