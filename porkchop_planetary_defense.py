@@ -36,7 +36,8 @@ r, v = earth.eph(t)
 v_earth_orbit = 7.726e3
 
 # This is the velocity that the comet impacts the Earth
-v_comet = np.array([-15e3,-28e3,28e3])
+#v_comet = np.array([-15e3,-28e3,28e3])
+v_comet = np.array([0,-30e3,30e3])
 # create a keplerian element for the comet
 # position at earth and velocity the specified velocity
 comet = pk.planet.keplerian(t,r, v_comet, pk.MU_SUN, 10, 10, 10,  'Comet')
@@ -106,7 +107,7 @@ rocket_r=l.get_x()[best_res["sol"]]
 rocket = pk.planet.keplerian(pk.epoch(t_exit, 'mjd2000'),re, rocket_v, pk.MU_SUN, 10, 10, 10,  'Rocket')
 
 # plot orbits of Earth and the impacting comet until impact time
-times = np.linspace(-6000, t_impact, 10000)
+times = np.linspace(-100, t_impact, 10000)
 rs=[]
 crs=[]
 for t in times:
